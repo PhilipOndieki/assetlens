@@ -65,9 +65,17 @@ CHART_COLORS = [
 
 
 def inject_css():
+    st.markdown(
+        '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">',
+        unsafe_allow_html=True,
+    )
+    st.markdown("""<style>
+    /* ── Root Variables ── */
+    ... rest of CSS unchanged ...
+    </style>""", unsafe_allow_html=True)
     st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
+                
+        <style>
     /* ── Root Variables ── */
     :root {
         --bg-primary: #0D1B2A;

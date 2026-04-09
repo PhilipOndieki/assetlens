@@ -176,13 +176,13 @@ if page == pages[0]:
     col_a, col_b = st.columns([3, 2])
     with col_a:
         fig = asset_count_by_campus_stacked(df)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         top_campus = df.groupby("LOCATION").size().idxmax()
         top_count = df.groupby("LOCATION").size().max()
         st.markdown(f'<div class="chart-caption">📌 {top_campus} holds the largest inventory with {top_count} assets — {pct(top_count, total_assets)} of total portfolio.</div>', unsafe_allow_html=True)
     with col_b:
         fig2 = asset_type_donut(df)
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width='stretch')
         top_type = df.groupby("ASSET TYPE").size().idxmax()
         top_type_count = df.groupby("ASSET TYPE").size().max()
         st.markdown(f'<div class="chart-caption">📌 {top_type} is the dominant asset category at {pct(top_type_count, total_assets)} of total inventory.</div>', unsafe_allow_html=True)
@@ -191,13 +191,13 @@ if page == pages[0]:
     col_c, col_d = st.columns([2, 3])
     with col_c:
         fig3 = top_buildings_by_fmv(df)
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig3, width='stretch')
         top_bldg = df.groupby("BUILDING")["FAIR MARKET VALUE"].sum().idxmax()
         top_bldg_fmv = df.groupby("BUILDING")["FAIR MARKET VALUE"].sum().max()
         st.markdown(f'<div class="chart-caption">📌 {top_bldg[:40]}... holds the highest FMV at {fmt_kes(top_bldg_fmv)}.</div>', unsafe_allow_html=True)
     with col_d:
         fig4 = fmv_treemap(df)
-        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig4, width='stretch')
         st.markdown('<div class="chart-caption">📌 Treemap shows FMV concentration across the 4-campus portfolio — larger blocks indicate higher asset value concentration.</div>', unsafe_allow_html=True)
 
     st.markdown("---")
@@ -206,18 +206,18 @@ if page == pages[0]:
 
     completeness = get_completeness(df)
     fig5 = completeness_bar(completeness)
-    st.plotly_chart(fig5, use_container_width=True)
+    st.plotly_chart(fig5, width='stretch')
 
     low = completeness[completeness["Completeness (%)"] < 80]
     if not low.empty:
         st.markdown(f'<div style="color:{PALETTE["danger"]}; font-size:13px; margin-top:-8px;">⚠️ {len(low)} column(s) below 80% completeness: <b>{", ".join(low["Column"].tolist())}</b></div>', unsafe_allow_html=True)
 
     st.dataframe(
-        completeness.style.applymap(
+        completeness.style.map(
             lambda v: f"color:{PALETTE['danger']}; font-weight:600" if isinstance(v, float) and v < 80 else "",
             subset=["Completeness (%)"]
         ),
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
     )
 
@@ -278,19 +278,19 @@ elif page == pages[1]:
         ca, cb = st.columns(2)
         with ca:
             fig_a = campus_building_count_bar(cdf, campus)
-            st.plotly_chart(fig_a, use_container_width=True)
+            st.plotly_chart(fig_a, width='stretch')
             top_b = cdf.groupby("BUILDING").size().idxmax()
             top_bc = cdf.groupby("BUILDING").size().max()
             st.markdown(f'<div class="chart-caption">📌 {top_b[:50]} has the most assets ({top_bc}) in this campus.</div>', unsafe_allow_html=True)
         with cb:
             fig_b = campus_fmv_stacked_bar(cdf, campus)
-            st.plotly_chart(fig_b, use_container_width=True)
+            st.plotly_chart(fig_b, width='stretch')
             top_fmv_b = cdf.groupby("BUILDING")["FAIR MARKET VALUE"].sum().idxmax()
             top_fmv_v = cdf.groupby("BUILDING")["FAIR MARKET VALUE"].sum().max()
             st.markdown(f'<div class="chart-caption">📌 {top_fmv_b[:50]} leads in FMV with {fmt_kes(top_fmv_v)} across asset types.</div>', unsafe_allow_html=True)
 
         fig_c = condition_heatmap(cdf, campus)
-        st.plotly_chart(fig_c, use_container_width=True)
+        st.plotly_chart(fig_c, width='stretch')
         good_count = len(cdf[cdf["CONDITION"] == "Good"])
         st.markdown(f'<div class="chart-caption">📌 {pct(good_count, total_c)} of assets at {campus} are in Good condition ({good_count} assets).</div>', unsafe_allow_html=True)
         st.markdown("---")
@@ -324,7 +324,7 @@ elif page == pages[1]:
             "Total Reserve (KES)": "KES {:,.0f}",
             "FMV/Reserve Ratio": "{:.2f}",
         }),
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
     )
 
@@ -400,7 +400,7 @@ elif page == pages[2]:
 
     st.dataframe(
         fdf_display,
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
         column_config={
             "Reserve (KES)": st.column_config.NumberColumn(format="KES %d"),
@@ -465,7 +465,7 @@ elif page == pages[2]:
             kpi_card("Std Deviation", fmt_kes(fmv_vals.std()))
 
         fig_box = fmv_boxplot(fdf)
-        st.plotly_chart(fig_box, use_container_width=True)
+        st.plotly_chart(fig_box, width='stretch')
         st.markdown('<div class="chart-caption">📌 Box plot shows FMV spread per asset type — outliers indicate high-value items requiring individual verification.</div>', unsafe_allow_html=True)
 
 
@@ -489,7 +489,7 @@ elif page == pages[3]:
 
     edited = st.data_editor(
         df_editable,
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
         column_config={
             "ASSET TAG": st.column_config.TextColumn("Asset Tag", disabled=True),
@@ -560,7 +560,7 @@ elif page == pages[3]:
             "Total FMV (KES)": "KES {:,.0f}",
             "Total Reserve (KES)": "KES {:,.0f}",
         }),
-        use_container_width=True, hide_index=True,
+        width='stretch', hide_index=True,
     )
 
 
@@ -647,7 +647,7 @@ Assets were classified across **{df_r['ASSET TYPE'].nunique()} asset categories*
                 "Total FMV (KES)": "KES {:,.0f}",
                 "Total Reserve (KES)": "KES {:,.0f}",
             }),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )
 
         st.markdown('<div class="section-header" style="font-size:16px; margin-top:18px">Asset Type Breakdown</div>', unsafe_allow_html=True)
@@ -662,7 +662,7 @@ Assets were classified across **{df_r['ASSET TYPE'].nunique()} asset categories*
                 "Total FMV (KES)": "KES {:,.0f}",
                 "% of Portfolio": "{:.1f}%",
             }),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )
 
     with col_rep2:
@@ -678,7 +678,7 @@ Assets were classified across **{df_r['ASSET TYPE'].nunique()} asset categories*
                 "Total FMV (KES)": "KES {:,.0f}",
                 "% of Total": "{:.1f}%",
             }),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )
 
         st.markdown('<div class="section-header" style="font-size:16px; margin-top:18px">Valuation Basis</div>', unsafe_allow_html=True)
@@ -694,7 +694,7 @@ Assets were classified across **{df_r['ASSET TYPE'].nunique()} asset categories*
                 "JKUAT/VAL Schedule of Rates Q1 2025, condition-adjusted"
             ]
         })
-        st.dataframe(basis_df, use_container_width=True, hide_index=True)
+        st.dataframe(basis_df, width='stretch', hide_index=True)
 
     st.markdown("---")
     st.markdown(f"""
@@ -738,7 +738,7 @@ Assets were classified across **{df_r['ASSET TYPE'].nunique()} asset categories*
             data=excel_bytes,
             file_name=f"JKUAT_Asset_Valuation_Report_{date.today().strftime('%Y%m%d')}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
+            width='stretch',
         )
     with ex2:
         csv_bytes = export_to_csv(df_r)
@@ -747,5 +747,5 @@ Assets were classified across **{df_r['ASSET TYPE'].nunique()} asset categories*
             data=csv_bytes,
             file_name=f"JKUAT_Assets_{date.today().strftime('%Y%m%d')}.csv",
             mime="text/csv",
-            use_container_width=True,
+            width='stretch',
         )
