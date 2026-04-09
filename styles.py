@@ -1,60 +1,17 @@
 import streamlit as st
 
 PALETTE = {
-    "bg_primary": "#0D1B2A",
+    "bg_primary":   "#0D1B2A",
     "bg_secondary": "#1B2E45",
-    "bg_card": "#162236",
-    "accent": "#C9A84C",
-    "accent_dim": "#9E7B30",
-    "success": "#2ECC71",
-    "warning": "#F39C12",
-    "danger": "#E74C3C",
+    "bg_card":      "#162236",
+    "accent":       "#C9A84C",
+    "accent_dim":   "#9E7B30",
+    "success":      "#2ECC71",
+    "warning":      "#F39C12",
+    "danger":       "#E74C3C",
     "text_primary": "#F0F4F8",
-    "text_muted": "#8899AA",
-    "border": "#243550",
-}
-
-PLOTLY_TEMPLATE = {
-    "layout": {
-        "paper_bgcolor": "rgba(0,0,0,0)",
-        "plot_bgcolor": "rgba(0,0,0,0)",
-        "font": {"color": PALETTE["text_primary"], "family": "DM Sans"},
-        "title": {"font": {"color": PALETTE["accent"], "size": 16, "family": "Playfair Display"}},
-        "xaxis": {
-            "gridcolor": "rgba(201,168,76,0.15)",
-            "linecolor": PALETTE["border"],
-            "tickfont": {"color": PALETTE["text_muted"]},
-            "title": {"font": {"color": PALETTE["text_muted"]}},
-            "zerolinecolor": PALETTE["border"],
-        },
-        "yaxis": {
-            "gridcolor": "rgba(201,168,76,0.15)",
-            "linecolor": PALETTE["border"],
-            "tickfont": {"color": PALETTE["text_muted"]},
-            "title": {"font": {"color": PALETTE["text_muted"]}},
-            "zerolinecolor": PALETTE["border"],
-        },
-        "legend": {
-            "bgcolor": "rgba(22,34,54,0.8)",
-            "bordercolor": PALETTE["border"],
-            "borderwidth": 1,
-            "font": {"color": PALETTE["text_primary"]},
-            "orientation": "v",
-            "xanchor": "right",
-            "x": 1,
-            "yanchor": "top",
-            "y": 1,
-        },
-        "hoverlabel": {
-            "bgcolor": PALETTE["bg_card"],
-            "bordercolor": PALETTE["accent"],
-            "font": {"color": PALETTE["text_primary"], "family": "DM Sans"},
-        },
-        "colorway": [
-            "#C9A84C", "#2ECC71", "#3498DB", "#E74C3C",
-            "#9B59B6", "#F39C12", "#1ABC9C", "#E67E22",
-        ],
-    }
+    "text_muted":   "#8899AA",
+    "border":       "#243550",
 }
 
 CHART_COLORS = [
@@ -70,13 +27,7 @@ def inject_css():
         unsafe_allow_html=True,
     )
     st.markdown("""<style>
-    /* ── Root Variables ── */
-    ... rest of CSS unchanged ...
-    </style>""", unsafe_allow_html=True)
-    st.markdown("""
-                
-        <style>
-    /* ── Root Variables ── */
+
     :root {
         --bg-primary: #0D1B2A;
         --bg-secondary: #1B2E45;
@@ -91,7 +42,6 @@ def inject_css():
         --border: #243550;
     }
 
-    /* ── Global ── */
     html, body, .stApp {
         background-color: var(--bg-primary) !important;
         font-family: 'DM Sans', sans-serif;
@@ -101,117 +51,199 @@ def inject_css():
     section[data-testid="stSidebar"] {
         background-color: #111F30 !important;
         border-right: 1px solid var(--border);
+        width: 220px !important;
     }
 
     section[data-testid="stSidebar"] * {
         color: var(--text-primary) !important;
+        font-size: 13px !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton > button {
+        width: 100%;
+        text-align: left;
+        background: transparent !important;
+        color: var(--text-muted) !important;
+        border: none !important;
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
+        border-radius: 4px !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton > button:hover {
+        background: rgba(201,168,76,0.1) !important;
+        color: var(--accent) !important;
     }
 
     .block-container {
-        padding: 1.5rem 2rem 3rem 2rem !important;
-        max-width: 1400px !important;
+        padding: 0 2rem 3rem 2rem !important;
+        max-width: 1600px !important;
     }
 
-    /* ── Typography ── */
     h1, h2, h3 { font-family: 'Playfair Display', serif !important; }
 
-    /* ── KPI Cards ── */
-    .kpi-card {
+    /* ── Topbar ── */
+    .topbar {
         background: var(--bg-card);
-        border-top: 3px solid var(--accent);
-        border-radius: 2px;
-        padding: 18px 20px 14px 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.35);
-        height: 100%;
-    }
-    .kpi-label {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        margin-bottom: 6px;
-    }
-    .kpi-value {
-        font-family: 'DM Sans', sans-serif;
-        font-size: 26px;
-        font-weight: 700;
-        color: var(--text-primary);
-        line-height: 1.1;
-    }
-    .kpi-delta {
-        font-size: 12px;
-        color: var(--text-muted);
-        margin-top: 4px;
-    }
-    .kpi-delta.positive { color: var(--success); }
-    .kpi-delta.negative { color: var(--danger); }
-    .kpi-delta.neutral  { color: var(--accent); }
-
-    /* ── Section Headers ── */
-    .section-header {
-        font-family: 'Playfair Display', serif;
-        font-size: 22px;
-        font-weight: 600;
-        color: var(--accent);
-        letter-spacing: 0.8px;
-        margin: 28px 0 6px 0;
-        padding-bottom: 8px;
         border-bottom: 1px solid var(--border);
-    }
-    .section-subtitle {
-        font-size: 13px;
-        color: var(--text-muted);
-        margin-bottom: 18px;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        margin: 0 -2rem 2.5rem -2rem;
+        gap: 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
     }
 
-    /* ── Page Header ── */
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-monogram {
+        width: 30px; height: 30px;
+        background: var(--accent);
+        border-radius: 4px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 700; color: #0D1B2A;
+    }
+    .brand-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .brand-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+    .topbar-nav { display: flex; align-items: center; gap: 0; flex: 1; justify-content: center; }
+    .nav-item {
+        padding: 0 18px; height: 56px;
+        display: flex; align-items: center;
+        font-size: 13px; color: var(--text-muted);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+        transition: color 0.15s;
+    }
+    .nav-item:hover { color: var(--text-primary); }
+    .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .topbar-badge {
+        background: var(--bg-secondary);
+        border: 0.5px solid var(--border);
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 11px;
+        color: var(--text-muted);
+        white-space: nowrap;
+    }
+
+    /* ── Page header ── */
     .page-header {
         background: linear-gradient(135deg, #162236 0%, #1B2E45 100%);
         border-left: 4px solid var(--accent);
-        border-radius: 2px;
+        border-radius: 0;
         padding: 24px 28px;
-        margin-bottom: 28px;
+        margin-bottom: 2.5rem;
         box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
     .page-title {
         font-family: 'Playfair Display', serif;
-        font-size: 28px;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin: 0 0 6px 0;
+        font-size: 28px; font-weight: 700;
+        color: var(--text-primary); margin: 0 0 6px 0;
     }
-    .page-subtitle {
-        font-size: 13px;
-        color: var(--text-muted);
-        margin: 0;
-    }
+    .page-subtitle { font-size: 13px; color: var(--text-muted); margin: 0; }
+    .timestamp { font-size: 11px; color: var(--text-muted); text-align: right; margin-top: -12px; margin-bottom: 10px; }
 
-    /* ── Report Header Badge ── */
-    .jkuat-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        background: var(--accent);
-        color: #0D1B2A;
+    /* ── Section headers ── */
+    .section-header {
         font-family: 'Playfair Display', serif;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        padding: 6px 14px;
+        font-size: 22px; font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.8px;
+        margin: 2.5rem 0 6px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+    }
+    .section-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+    /* ── KPI cards ── */
+    .kpi-card {
+        background: var(--bg-card);
+        border-top: 3px solid var(--accent);
         border-radius: 2px;
-        text-transform: uppercase;
+        padding: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+        height: 100%;
+    }
+    .kpi-label { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+    .kpi-value { font-family: 'DM Sans', sans-serif; font-size: 26px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+    .kpi-delta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .kpi-delta.positive { color: var(--success); }
+    .kpi-delta.negative { color: var(--danger); }
+    .kpi-delta.warning  { color: var(--warning); }
+    .kpi-delta.neutral  { color: var(--accent); }
+
+    /* ── Filter strip ── */
+    .filter-strip {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
     }
 
-    /* ── Insight Captions ── */
-    .chart-caption {
-        font-size: 12px;
-        color: var(--text-muted);
-        font-style: italic;
-        margin-top: -8px;
-        margin-bottom: 18px;
-        padding-left: 2px;
+    /* ── Info strip ── */
+    .info-strip {
+        background: var(--bg-card);
+        border-left: 3px solid var(--accent);
+        padding: 10px 16px;
+        margin-bottom: 1rem;
+        font-size: 13px;
     }
+
+    /* ── Pagination ── */
+    .pagination-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+
+    /* ── Chart caption ── */
+    .chart-caption { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: -8px; margin-bottom: 1.5rem; padding-left: 2px; }
+
+    /* ── Asset card ── */
+    .asset-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-top: 3px solid var(--accent);
+        padding: 1.5rem;
+        border-radius: 2px;
+        margin-bottom: 1rem;
+    }
+    .asset-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .asset-tag-label { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--accent); }
+    .asset-card-desc { font-size: 15px; color: var(--text-primary); margin-bottom: 1rem; }
+    .asset-card-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .acf { margin-bottom: 8px; font-size: 13px; }
+    .acl { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; display: block; }
+    .acv { color: var(--text-primary); font-weight: 500; }
+
+    /* ── Status badges ── */
+    .status-badge {
+        padding: 3px 10px; font-size: 11px; font-weight: 600;
+        letter-spacing: 0.5px; border-radius: 2px;
+    }
+    .status-badge.danger { background: rgba(231,76,60,0.2); border: 1px solid #E74C3C; color: #E74C3C; }
+    .status-badge.warning { background: rgba(243,156,18,0.2); border: 1px solid #F39C12; color: #F39C12; }
+    .condition-badge { background: rgba(201,168,76,0.15); border: 1px solid var(--accent); color: var(--accent); padding: 3px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+
+    /* ── Edit form ── */
+    .edit-form { background: var(--bg-secondary); border: 1px solid var(--border); padding: 1.5rem; margin-top: 1rem; }
+
+    /* ── Campus banner ── */
+    .campus-banner { background: linear-gradient(90deg, rgba(201,168,76,0.15) 0%, rgba(22,34,54,0) 100%); border-left: 4px solid var(--accent); padding: 12px 18px; margin: 2.5rem 0 1.5rem 0; }
+    .campus-banner h2 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); margin: 0; }
+
+    /* ── Report block ── */
+    .report-block { background: var(--bg-card); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .report-block h3 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 16px; margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+    /* ── JKUAT badge ── */
+    .jkuat-badge { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: #0D1B2A; font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; padding: 6px 14px; border-radius: 2px; text-transform: uppercase; }
 
     /* ── Buttons ── */
     .stButton > button {
@@ -226,112 +258,28 @@ def inject_css():
         padding: 10px 24px !important;
         text-transform: uppercase !important;
     }
-    .stButton > button:hover {
-        background: var(--accent-dim) !important;
-    }
+    .stButton > button:hover { background: var(--accent-dim) !important; }
+    .stButton > button:disabled { background: var(--border) !important; color: var(--text-muted) !important; }
 
     /* ── Divider ── */
-    hr {
-        border: none !important;
-        border-top: 1px solid var(--border) !important;
-        margin: 28px 0 !important;
-    }
+    hr { border: none !important; border-top: 1px solid var(--border) !important; margin: 2.5rem 0 !important; }
 
     /* ── Dataframe ── */
-    .stDataFrame {
-        border: 1px solid var(--border);
-    }
+    .stDataFrame { border: 1px solid var(--border); }
 
-    /* ── Selectbox / Multiselect ── */
-    .stMultiSelect > div, .stSelectbox > div {
-        background-color: var(--bg-secondary) !important;
-        border: 1px solid var(--border) !important;
-    }
+    /* ── Inputs ── */
+    .stMultiSelect > div, .stSelectbox > div { background-color: var(--bg-secondary) !important; border: 1px solid var(--border) !important; }
+    .stTextInput > div > div > input { background-color: var(--bg-secondary) !important; color: var(--text-primary) !important; border: 1px solid var(--border) !important; border-radius: 0 !important; }
+    .stNumberInput > div > div > input { background-color: var(--bg-secondary) !important; color: var(--text-primary) !important; border: 1px solid var(--border) !important; border-radius: 0 !important; }
 
-    /* ── Text Input ── */
-    .stTextInput > div > div > input {
-        background-color: var(--bg-secondary) !important;
-        color: var(--text-primary) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 0 !important;
-    }
+    /* ── Tabs ── */
+    .stTabs [data-baseweb="tab-list"] { background: var(--bg-card); border-bottom: 1px solid var(--border); gap: 0; }
+    .stTabs [data-baseweb="tab"] { background: transparent; color: var(--text-muted); font-size: 13px; padding: 10px 20px; border-bottom: 2px solid transparent; }
+    .stTabs [aria-selected="true"] { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
 
-    /* ── Metric overrides ── */
-    [data-testid="metric-container"] {
-        background: var(--bg-card);
-        border-top: 3px solid var(--accent);
-        padding: 16px;
-    }
-
-    /* ── Sidebar summary card ── */
-    .sidebar-summary {
-        background: #0D1B2A;
-        border: 1px solid var(--border);
-        border-left: 3px solid var(--accent);
-        padding: 12px 14px;
-        margin-bottom: 16px;
-        font-size: 12px;
-    }
-    .sidebar-summary .s-label { color: var(--text-muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
-    .sidebar-summary .s-value { color: var(--text-primary); font-weight: 600; font-size: 14px; }
-
-    /* ── Asset detail card ── */
-    .asset-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-top: 3px solid var(--accent);
-        padding: 20px;
-        border-radius: 2px;
-    }
-    .asset-card-field { margin-bottom: 8px; font-size: 13px; }
-    .asset-card-label { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
-    .asset-card-value { color: var(--text-primary); font-weight: 500; }
-
-    /* ── Completeness table row highlighting ── */
-    .low-completeness { color: var(--danger) !important; font-weight: 600; }
-
-    /* ── Campus section banner ── */
-    .campus-banner {
-        background: linear-gradient(90deg, rgba(201,168,76,0.15) 0%, rgba(22,34,54,0) 100%);
-        border-left: 4px solid var(--accent);
-        padding: 12px 18px;
-        margin: 24px 0 16px 0;
-    }
-    .campus-banner h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 20px;
-        color: var(--accent);
-        margin: 0;
-    }
-
-    /* ── Report export section ── */
-    .report-block {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        padding: 24px;
-        margin-bottom: 20px;
-    }
-    .report-block h3 {
-        font-family: 'Playfair Display', serif;
-        color: var(--accent);
-        font-size: 16px;
-        margin-top: 0;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 8px;
-    }
-
-    /* ── Timestamp ── */
-    .timestamp {
-        font-size: 11px;
-        color: var(--text-muted);
-        text-align: right;
-        margin-top: -12px;
-        margin-bottom: 10px;
-    }
-
-    /* ── Hide Streamlit chrome ── */
+    /* ── Hide chrome ── */
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
     header { visibility: hidden; }
-    </style>
-    """, unsafe_allow_html=True)
+
+    </style>""", unsafe_allow_html=True)
