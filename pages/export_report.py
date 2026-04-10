@@ -4,7 +4,7 @@ from datetime import date
 from export import export_to_excel, export_pending_excel
 from styles import PALETTE
 
-VALUER_NAME = "Philip Barongo Ondieki"
+VALUER_NAME = "Kenval realtors"
 REF = "JKUAT/VAL/2025/001"
 
 

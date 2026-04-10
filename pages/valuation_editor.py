@@ -5,7 +5,7 @@ from data_loader import load_sidecar, save_sidecar
 from export import export_to_excel
 from styles import PALETTE
 
-VALUER_NAME = "Philip Barongo Ondieki"
+VALUER_NAME = "Kenval realtors"
 
 ASSET_TYPES = [
     "FURNITURE AND FITTINGS", "COMPUTER AND ICT EQUIPMENT",

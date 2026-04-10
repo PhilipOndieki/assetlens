@@ -9,7 +9,7 @@ PAGES = [
     ("export_report",      "Export Report"),
 ]
 
-VALUER_NAME = "Philip Barongo Ondieki"
+VALUER_NAME = "Kenval realtors"
 REF = "JKUAT/VAL/2025/001"
 
 def render_topbar():

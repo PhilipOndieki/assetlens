@@ -262,7 +262,7 @@ def export_to_excel(df: pd.DataFrame, pending_df: pd.DataFrame, valuer_name: str
 def export_pending_excel(pending_df: pd.DataFrame) -> bytes:
     wb = Workbook()
     today_str = date.today().strftime("%d %B %Y")
-    _sheet_pending(wb, pending_df, "Philip Barongo Ondieki", today_str)
+    _sheet_pending(wb, pending_df, "Kenval realtors", today_str)
     buf = io.BytesIO()
     wb.save(buf)
     buf.seek(0)

@@ -7,7 +7,7 @@ from charts.distribution import completeness_bar, fmv_boxplot
 from data_loader import get_completeness
 from styles import PALETTE
 
-VALUER_NAME = "Philip Barongo Ondieki"
+VALUER_NAME = "Kenval realtors"
 REF = "JKUAT/VAL/2025/001"
 
 
