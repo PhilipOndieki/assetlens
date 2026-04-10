@@ -296,10 +296,73 @@ def inject_css():
     .stTabs [data-baseweb="tab"] { background: transparent; color: var(--text-muted); font-size: 13px; padding: 10px 20px; border-bottom: 2px solid transparent; }
     .stTabs [aria-selected="true"] { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
 
-    /* ── Hide chrome ── */
+     /* ── Hide chrome ── */
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
     header { visibility: hidden; }
-                
+    section[data-testid="stSidebar"] { display: none !important; }
+    button[data-testid="collapsedControl"] { display: none !important; }
+    /* ── Skeleton screen ── */
+    @keyframes shimmer {
+        0%   { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+
+    .skeleton-topbar {
+        height: 56px;
+        margin: 0 -2rem 2.5rem -2rem;
+        background: linear-gradient(90deg, #162236 25%, #1B2E45 50%, #162236 75%);
+        background-size: 1000px 100%;
+        animation: shimmer 1.6s infinite linear;
+    }
+
+    .skeleton-header {
+        height: 88px;
+        margin-bottom: 2.5rem;
+        border-left: 4px solid #243550;
+        background: linear-gradient(90deg, #162236 25%, #1B2E45 50%, #162236 75%);
+        background-size: 1000px 100%;
+        animation: shimmer 1.6s infinite linear;
+    }
+
+    .skeleton-kpi-row {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .skeleton-kpi {
+        height: 100px;
+        border-radius: 2px;
+        border-top: 3px solid #243550;
+        background: linear-gradient(90deg, #162236 25%, #1B2E45 50%, #162236 75%);
+        background-size: 1000px 100%;
+        animation: shimmer 1.6s infinite linear;
+    }
+
+    .skeleton-chart-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .skeleton-chart-wide {
+        flex: 3;
+        height: 280px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #162236 25%, #1B2E45 50%, #162236 75%);
+        background-size: 1000px 100%;
+        animation: shimmer 1.6s infinite linear;
+    }
+
+    .skeleton-chart-narrow {
+        flex: 2;
+        height: 280px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #162236 25%, #1B2E45 50%, #162236 75%);
+        background-size: 1000px 100%;
+        animation: shimmer 1.6s infinite linear;
+    }               
 
     </style>""", unsafe_allow_html=True)
