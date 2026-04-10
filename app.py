@@ -21,12 +21,15 @@ if "active_page" not in st.session_state:
 
 if "asset_df" not in st.session_state or "pending_df" not in st.session_state:
     if os.path.exists(DATA_FILE):
-        asset_df, pending_df = load_data(DATA_FILE)
+        with st.spinner("Loading asset register..."):
+            asset_df, pending_df = load_data(DATA_FILE)
         st.session_state["asset_df"] = asset_df
         st.session_state["pending_df"] = pending_df
     else:
         st.session_state["asset_df"] = None
         st.session_state["pending_df"] = None
+
+
 
 # ── Handle file upload if no data file ──
 if st.session_state["asset_df"] is None:

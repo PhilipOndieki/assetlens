@@ -12,18 +12,10 @@ PAGES = [
 VALUER_NAME = "Philip Barongo Ondieki"
 REF = "JKUAT/VAL/2025/001"
 
-
 def render_topbar():
     active = st.session_state.get("active_page", "executive_summary")
 
-    nav_items = ""
-    for key, label in PAGES:
-        active_class = "active" if key == active else ""
-        nav_items += f"""
-        <div class="nav-item {active_class}" onclick="setPage('{key}')" id="nav-{key}">
-            {label}
-        </div>"""
-
+    # Static brand + badge bar (purely visual)
     st.markdown(f"""
     <div class="topbar">
         <div class="brand">
@@ -33,28 +25,20 @@ def render_topbar():
                 <div class="brand-sub">JKUAT · 2025</div>
             </div>
         </div>
-        <nav class="topbar-nav">{nav_items}</nav>
         <div class="topbar-right">
             <span class="topbar-badge">{VALUER_NAME}</span>
             <span class="topbar-badge">{REF}</span>
         </div>
     </div>
-    <script>
-    function setPage(key) {{
-        const inp = window.parent.document.querySelectorAll('input[data-testid="stTextInput"]');
-        // Use Streamlit's component communication via query params
-        const url = new URL(window.parent.location.href);
-        url.searchParams.set('page', key);
-        window.parent.history.replaceState(null, '', url);
-        // Trigger via hidden button
-        const btn = window.parent.document.getElementById('nav-trigger-' + key);
-        if (btn) btn.click();
-    }}
-    </script>
     """, unsafe_allow_html=True)
 
-    for key, label in PAGES:
-        col_id = f"nav_btn_{key}"
-        if st.sidebar.button(label, key=col_id, help=f"Go to {label}"):
-            st.session_state["active_page"] = key
-            st.rerun()
+    # Functional nav buttons rendered as a horizontal strip below the brand bar
+    cols = st.columns(len(PAGES))
+    for col, (key, label) in zip(cols, PAGES):
+        with col:
+            is_active = key == active
+            # Highlight active page via button label prefix
+            btn_label = f"▸ {label}" if is_active else label
+            if st.button(btn_label, key=f"nav_btn_{key}", use_container_width=True):
+                st.session_state["active_page"] = key
+                st.rerun()

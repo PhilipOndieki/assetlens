@@ -260,7 +260,26 @@ def inject_css():
     }
     .stButton > button:hover { background: var(--accent-dim) !important; }
     .stButton > button:disabled { background: var(--border) !important; color: var(--text-muted) !important; }
-
+                
+    /* ── Nav strip buttons — override global button style ── */
+    div[data-testid="stHorizontalBlock"] .stButton > button {
+        background: var(--bg-card) !important;
+        color: var(--text-muted) !important;
+        font-weight: 400 !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
+        border-bottom: 2px solid transparent !important;
+        border-radius: 0 !important;
+        padding: 0 18px !important;
+        height: 56px !important;
+        font-size: 13px !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stHorizontalBlock"] .stButton > button:hover {
+        background: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+    }
+                
     /* ── Divider ── */
     hr { border: none !important; border-top: 1px solid var(--border) !important; margin: 2.5rem 0 !important; }
 
@@ -281,5 +300,6 @@ def inject_css():
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
     header { visibility: hidden; }
+                
 
     </style>""", unsafe_allow_html=True)

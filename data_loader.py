@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import numpy as np
 import streamlit as st
+import hashlib
 
 SIDECAR_PATH = "session_data.json"
 
@@ -138,14 +139,26 @@ def _derive_columns(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+@st.cache_data(show_spinner=False)
+def _load_parquet_or_excel(filepath: str):
+    parquet_path = filepath.replace(".xlsx", ".parquet")
 
-@st.cache_data(show_spinner=False, hash_funcs={pd.DataFrame: lambda x: x.shape})
-def _load_excel(filepath: str):
-    return pd.read_excel(filepath)
+    # If parquet cache exists and is newer than the Excel file, read that instead
+    if os.path.exists(parquet_path) and \
+       os.path.getmtime(parquet_path) >= os.path.getmtime(filepath):
+        return pd.read_parquet(parquet_path)
+
+    # First load — read Excel and save parquet for next time
+    df = pd.read_excel(filepath)
+    try:
+        df.to_parquet(parquet_path, index=False)
+    except Exception:
+        pass  # If parquet save fails, no problem — just slower next load
+    return df
 
 
 def load_data(filepath: str):
-    raw = _load_excel(filepath)
+    raw = _load_parquet_or_excel(filepath)
     df = _clean(raw.copy())
 
     mask_pending = df["FAIR MARKET VALUE"].isna() | df["RESERVE PRICE"].isna()
