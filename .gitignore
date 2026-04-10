@@ -1,2 +1,5 @@
 __pycache__
 venv/
+
+*.xlsx
+data/your_file.xlsx
