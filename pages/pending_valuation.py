@@ -75,7 +75,7 @@ def render():
     display_cols = ["ASSET TAG", "ASSET DESCRIPTION", "ASSET TYPE", "LOCATION",
                     "BUILDING", "DEPARTMENT", "CONDITION"]
     fdf_display = fdf[[c for c in display_cols if c in fdf.columns]].copy()
-    st.dataframe(fdf_display, use_container_width=True, hide_index=True)
+    st.dataframe(fdf_display, width='stretch', hide_index=True)
 
     st.markdown("---")
     st.markdown('<div class="section-header">Value an asset</div>', unsafe_allow_html=True)
@@ -170,5 +170,5 @@ def render():
         data=pending_bytes,
         file_name=f"JKUAT_Pending_Valuation_{date.today().strftime('%Y%m%d')}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        use_container_width=True,
+        width='stretch',
     )

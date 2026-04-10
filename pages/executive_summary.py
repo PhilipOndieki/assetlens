@@ -80,13 +80,13 @@ def render():
     with col_a:
         grp_campus = fdf.groupby("LOCATION").size()
         fig1 = asset_count_by_campus(fdf)
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig1, width='stretch')
         top_campus = grp_campus.idxmax()
         st.markdown(f'<div class="chart-caption">📌 {top_campus} holds the largest inventory — {grp_campus.max():,} assets ({pct(grp_campus.max(), total)} of portfolio).</div>', unsafe_allow_html=True)
     with col_b:
         grp_type = fdf.groupby("ASSET TYPE").size()
         fig2 = asset_type_donut(fdf)
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width='stretch')
         top_type = grp_type.idxmax()
         st.markdown(f'<div class="chart-caption">📌 {top_type} is the dominant category at {pct(grp_type.max(), total)} of total inventory.</div>', unsafe_allow_html=True)
 
@@ -95,12 +95,12 @@ def render():
     with col_c:
         grp_bldg = fdf.groupby("BUILDING")["FAIR MARKET VALUE"].sum()
         fig3 = top_buildings_by_fmv(fdf)
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig3, width='stretch')
         top_bldg = grp_bldg.idxmax()
         st.markdown(f'<div class="chart-caption">📌 {str(top_bldg)[:50]} holds the highest FMV at {fmt_kes(grp_bldg.max())}.</div>', unsafe_allow_html=True)
     with col_d:
         fig4 = fmv_treemap(fdf)
-        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig4, width='stretch')
         st.markdown('<div class="chart-caption">📌 Treemap shows FMV concentration across the portfolio — larger blocks indicate higher value concentration.</div>', unsafe_allow_html=True)
 
     st.markdown("---")
@@ -109,7 +109,7 @@ def render():
 
     completeness = get_completeness(fdf)
     fig5 = completeness_bar(completeness)
-    st.plotly_chart(fig5, use_container_width=True)
+    st.plotly_chart(fig5, width='stretch')
 
     low = completeness[completeness["Completeness (%)"] < 80]
     if not low.empty:
@@ -119,5 +119,5 @@ def render():
     st.markdown("---")
     st.markdown('<div class="section-header">FMV distribution</div>', unsafe_allow_html=True)
     fig6 = fmv_boxplot(fdf)
-    st.plotly_chart(fig6, use_container_width=True)
+    st.plotly_chart(fig6, width='stretch')
     st.markdown('<div class="chart-caption">📌 Box plot shows FMV spread per asset type — outliers indicate high-value items requiring individual verification.</div>', unsafe_allow_html=True)

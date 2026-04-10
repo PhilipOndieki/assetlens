@@ -76,7 +76,7 @@ def render():
 
         edited = st.data_editor(
             page_slice,
-            use_container_width=True,
+            width='stretch',
             hide_index=True,
             column_config={
                 "ASSET TAG": st.column_config.TextColumn("Asset Tag", disabled=True),
@@ -209,7 +209,7 @@ def render():
                 data=excel_bytes,
                 file_name=f"JKUAT_Asset_Valuation_{date.today().strftime('%Y%m%d')}.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                use_container_width=True,
+                width='stretch',
             )
         with ex2:
             csv_bytes = st.session_state["asset_df"].to_csv(index=False).encode("utf-8")
@@ -218,7 +218,7 @@ def render():
                 data=csv_bytes,
                 file_name=f"JKUAT_Assets_{date.today().strftime('%Y%m%d')}.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
 
         st.markdown("---")
@@ -232,5 +232,5 @@ def render():
                               "Total_FMV": "Total FMV (KES)", "Total_Reserve": "Total Reserve (KES)"}, inplace=True)
         st.dataframe(
             prev.style.format({"Total FMV (KES)": "KES {:,.0f}", "Total Reserve (KES)": "KES {:,.0f}"}),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )

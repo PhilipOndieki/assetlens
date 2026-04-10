@@ -100,7 +100,7 @@ The largest single concentration of value is in **{str(top_bldg)[:80]}**, which 
                                         "Total_Reserve": "Total Reserve (KES)"}, inplace=True)
         st.dataframe(
             campus_summary.style.format({"Total FMV (KES)": "KES {:,.0f}", "Total Reserve (KES)": "KES {:,.0f}"}),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )
 
         st.markdown('<div class="section-header" style="font-size:16px;margin-top:18px">Asset type breakdown</div>', unsafe_allow_html=True)
@@ -112,7 +112,7 @@ The largest single concentration of value is in **{str(top_bldg)[:80]}**, which 
         type_summary.rename(columns={"ASSET TYPE": "Asset Type", "Total_FMV": "Total FMV (KES)"}, inplace=True)
         st.dataframe(
             type_summary.style.format({"Total FMV (KES)": "KES {:,.0f}", "% of Portfolio": "{:.1f}%"}),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )
 
     with col2:
@@ -125,7 +125,7 @@ The largest single concentration of value is in **{str(top_bldg)[:80]}**, which 
         cond_summary.rename(columns={"CONDITION": "Condition", "Total_FMV": "Total FMV (KES)"}, inplace=True)
         st.dataframe(
             cond_summary.style.format({"Total FMV (KES)": "KES {:,.0f}", "% of Total": "{:.1f}%"}),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )
 
         st.markdown('<div class="section-header" style="font-size:16px;margin-top:18px">Missing & untagged</div>', unsafe_allow_html=True)
@@ -137,7 +137,7 @@ The largest single concentration of value is in **{str(top_bldg)[:80]}**, which 
                 int(df["IS_UNTAGGED"].sum()),
             ]
         })
-        st.dataframe(status_df, use_container_width=True, hide_index=True)
+        st.dataframe(status_df, width='stretch', hide_index=True)
 
     st.markdown("---")
     st.markdown(f"""
@@ -180,7 +180,7 @@ The largest single concentration of value is in **{str(top_bldg)[:80]}**, which 
             data=excel_bytes,
             file_name=f"JKUAT_Asset_Valuation_Report_{date.today().strftime('%Y%m%d')}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
+            width='stretch',
         )
     with ex2:
         csv_bytes = df.to_csv(index=False).encode("utf-8")
@@ -189,5 +189,5 @@ The largest single concentration of value is in **{str(top_bldg)[:80]}**, which 
             data=csv_bytes,
             file_name=f"JKUAT_Assets_{date.today().strftime('%Y%m%d')}.csv",
             mime="text/csv",
-            use_container_width=True,
+            width='stretch',
         )

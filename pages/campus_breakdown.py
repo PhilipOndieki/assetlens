@@ -63,19 +63,19 @@ def render():
         ca, cb = st.columns(2)
         with ca:
             fig_a = building_asset_count(cdf, campus)
-            st.plotly_chart(fig_a, use_container_width=True)
+            st.plotly_chart(fig_a, width='stretch')
             top_b = cdf.groupby("BUILDING").size().idxmax()
             top_bc = cdf.groupby("BUILDING").size().max()
             st.markdown(f'<div class="chart-caption">📌 {str(top_b)[:50]} has the most assets ({top_bc}) in this campus.</div>', unsafe_allow_html=True)
         with cb:
             fig_b = building_fmv(cdf, campus)
-            st.plotly_chart(fig_b, use_container_width=True)
+            st.plotly_chart(fig_b, width='stretch')
             top_fmv_b = cdf.groupby("BUILDING")["FAIR MARKET VALUE"].sum().idxmax()
             top_fmv_v = cdf.groupby("BUILDING")["FAIR MARKET VALUE"].sum().max()
             st.markdown(f'<div class="chart-caption">📌 {str(top_fmv_b)[:50]} leads in FMV with {fmt_kes(top_fmv_v)}.</div>', unsafe_allow_html=True)
 
         fig_c = condition_heatmap(cdf, campus)
-        st.plotly_chart(fig_c, use_container_width=True)
+        st.plotly_chart(fig_c, width='stretch')
         st.markdown("---")
 
     st.markdown('<div class="section-header">Portfolio summary table</div>', unsafe_allow_html=True)
@@ -100,5 +100,5 @@ def render():
         summary.style.background_gradient(subset=["Total FMV (KES)"], cmap="YlOrBr")
         .format({"Total FMV (KES)": "KES {:,.0f}", "Avg FMV (KES)": "KES {:,.0f}",
                  "Total Reserve (KES)": "KES {:,.0f}", "FMV/Reserve Ratio": "{:.2f}"}),
-        use_container_width=True, hide_index=True,
+        width='stretch', hide_index=True,
     )

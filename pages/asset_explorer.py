@@ -90,7 +90,7 @@ def render():
 
     st.dataframe(
         display_df,
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
         column_config={
             "Reserve (KES)": st.column_config.NumberColumn(format="KES %d"),
@@ -120,7 +120,7 @@ def render():
             missing_df[["ASSET TAG", "ASSET DESCRIPTION", "ASSET TYPE", "LOCATION",
                          "BUILDING", "DEPARTMENT", "FAIR MARKET VALUE"]].rename(
                 columns={"FAIR MARKET VALUE": "FMV (KES)"}),
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
             column_config={"FMV (KES)": st.column_config.NumberColumn(format="KES %d")}
         )
 
